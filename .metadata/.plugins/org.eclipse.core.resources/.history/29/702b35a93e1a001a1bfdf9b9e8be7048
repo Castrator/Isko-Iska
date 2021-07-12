@@ -1,0 +1,31 @@
+package Entity;
+
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
+public class Booklet extends GameObject{
+	
+	public Booklet(int x, int y, String s) {
+		super(x, y);
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream(String.format("/Sprites/Booklet/%s", s)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		width = image.getWidth();
+		height = image.getHeight();
+	}
+
+	public void update() {}
+	
+	public void draw(Graphics2D g) {
+		g.drawImage(image, x, y, null);
+
+	}
+	
+}

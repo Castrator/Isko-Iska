@@ -1,0 +1,21 @@
+package Entity;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+public class Platform extends GameObject{
+	
+
+	public Platform(int x, int y, BufferedImage image) {
+		super(x, y);
+		image = image;
+	}
+	
+	public void update() {}
+	
+	public void draw(Graphics2D g) {
+		g.drawImage(image, x, y, null);
+	}
+	
+}

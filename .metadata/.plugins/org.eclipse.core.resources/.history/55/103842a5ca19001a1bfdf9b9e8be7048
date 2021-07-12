@@ -1,0 +1,111 @@
+package Entity;
+
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+
+public class Isko extends GameObject{
+	
+	private Animation animation;
+	private ArrayList<BufferedImage[]> sprites;
+	private final int[] numFrames = {1, 8};
+	private static final int IDLE = 0;
+	private static final int RUNNING = 1;
+	
+	private boolean stopping;
+
+	public Isko(int x, int y) {
+		super(x, y);
+		animation = new Animation();
+		sprites = new ArrayList<BufferedImage[]>();
+		loadSprites("Isko", "run", 1);
+		loadSprites("Isko", "run", 8);
+		animation.setFrames(sprites.get(RUNNING));
+		animation.setDelay(100);
+	}
+	
+	public void loadSprites(String dir, String s, int n) {
+		BufferedImage frame;
+		BufferedImage[] bi = new BufferedImage[n];
+		for(int i = 0; i < n; i++) {
+			try {
+				frame = ImageIO.read(getClass().getResourceAsStream(String.format("/Sprites/%s/%s%d.png", dir, s, i)));
+				bi[i] = frame;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		sprites.add(bi);
+	}
+	
+	public void updateDimension() {
+		BufferedImage image = animation.getImage();
+		width = image.getWidth();
+		height = image.getHeight();
+	}
+	
+	public void checkPlatformCollision() {
+		
+	}
+	
+	public void keyPressed(int k) {
+		if(k == KeyEvent.VK_D || k == KeyEvent.VK_A) {
+			stopping = false;
+			if(k == KeyEvent.VK_A) {
+				ax = -0.5;
+			}
+			if(k == KeyEvent.VK_D) {
+				ax = 0.5;
+			}
+
+		}
+	}
+	
+	public void keyReleased(int k) {
+		if(k == KeyEvent.VK_D || k == KeyEvent.VK_A) {
+			stopping = true;
+		}
+	}
+
+	public void updateSpeed(){
+		vx += ax;
+		vy += ay;
+		System.out.println(vx);
+		if(vx > 4) {
+			vx = 4;
+		}else if(vx < -4) {
+			vx = -4;
+		}
+		
+		if(stopping && vx != 0) {
+			if(vx > 0) {
+				ax = -0.5;
+			}else if(vx < 0) {
+				ax = 0.5;
+			}
+		}else {
+			stopping = false;
+			ax = 0;
+		}
+		
+	}
+	public void setPosition() {
+		updateSpeed();
+		x += vx;
+		y += vy;
+	}
+	
+	public void update() {
+		updateDimension();
+		setPosition();
+		checkPlatformCollision();
+		animation.update();
+	}
+	
+	public void draw(Graphics2D g) {
+		g.drawImage(animation.getImage().getScaledInstance(width * 2, height * 2, BufferedImage.SCALE_DEFAULT), x, y, null);
+	}
+
+}

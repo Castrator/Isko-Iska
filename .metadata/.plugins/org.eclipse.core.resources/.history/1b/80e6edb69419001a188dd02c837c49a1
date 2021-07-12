@@ -1,0 +1,19 @@
+package Entity;
+
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
+public class Isko extends GameObject{
+	
+	private ArrayList<BufferedImage[]> sprites;
+	private final int[] numFrames = {3, 8};
+	private static final int IDLE = 0;
+	private static final int RUNNING = 1;
+
+	public Isko() {
+		super(100, 100);
+		
+	}
+	
+}

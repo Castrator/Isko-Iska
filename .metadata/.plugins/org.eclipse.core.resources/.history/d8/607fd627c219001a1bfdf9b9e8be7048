@@ -1,0 +1,58 @@
+package Entity;
+
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
+public class Isko extends GameObject{
+	
+	private ArrayList<BufferedImage[]> sprites;
+	private final int[] numFrames = {1, 8};
+	private static final int IDLE = 0;
+	private static final int RUNNING = 1;
+
+	public Isko(int x, int y) {
+		super(x, y);
+		loadSprites("Isko", "run", 8);
+	}
+	
+	public void loadSprites(String dir, String s, int n) {
+		BufferedImage frame;
+		BufferedImage[] bi = new BufferedImage[n];
+		for(int i = 0; i < n; i++) {
+			try {
+				frame = ImageIO.read(getClass().getResourceAsStream(String.format("/Sprites/%s/%s%d.png", dir, s, i)));
+				bi[i] = frame;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		sprites.add(bi);
+	}
+	
+	public void checkPlatformCollision() {
+		
+	}
+	
+	public void setSpeed() {
+		vx += ax;
+		vy += ay;
+	}
+	
+	public void setPosition() {
+		x += vx;
+		y += vy;
+	}
+	
+	public void update() {
+		setSpeed();
+		checkPlatformCollision();
+		setPosition();
+	}
+	
+	public void draw(Graphics2D g) {
+		g.drawImage(image, x, y, null);
+	}
+
+}

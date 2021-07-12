@@ -1,0 +1,69 @@
+package GameState;
+
+import TileMap.Background;
+import Entity.Iska;
+import Entity.Isko;
+import Entity.Platform;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
+public class Level1State extends GameState{
+	
+	private Background bg;
+	private Isko isko;
+	private Iska iska;
+	private Platform[] platform;
+
+	public Level1State (GameStateManager gsm){
+		this.gsm = gsm;
+		
+		try {
+			bg = new Background("/Background/Background.png", 0);
+			bg.setVector(0, 0);
+			isko = new Isko(250, 575);
+			iska = new Iska(350, 575);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		init();
+	}
+	
+	public void init() {
+		platform = new Platform[2];
+		try {
+			platform[0] = new Platform(0, 653, "Map1/tile0.png");
+			platform[1] = new Platform(0, 650, 150, 500, 300, 650);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void update() {
+		bg.update();
+		for(int i = 0; i < platform.length; i++) {
+			isko.checkPlatformCollision(platform[i]);
+			iska.checkPlatformCollision(platform[i]);
+		}
+		isko.update();
+		iska.update();
+	}
+	public void draw(Graphics2D g) {
+		//draw bg
+		bg.draw(g);
+		for(int i = 0; i < platform.length; i++) {
+			platform[i].draw(g);
+		}
+		isko.draw(g);
+		iska.draw(g);
+	}
+	
+	
+	public void keyPressed(int k) {
+		isko.keyPressed(k);
+		iska.keyPressed(k);
+	}
+	public void keyReleased(int k) {
+		isko.keyReleased(k);
+		iska.keyReleased(k);
+	}
+}

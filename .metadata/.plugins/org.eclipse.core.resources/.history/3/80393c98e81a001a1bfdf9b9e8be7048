@@ -1,0 +1,237 @@
+package GameState;
+
+import TileMap.Background;
+import Entity.Animation;
+import Entity.Barrier;
+import Entity.Booklet;
+import Entity.Iska;
+import Entity.Isko;
+import Entity.Platform;
+import Entity.Water;
+import Entity.Button;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
+public class Level1State extends GameState{
+	
+	private Background bg;
+	private Animation black;
+	private BufferedImage pauseImage;
+	private Isko isko;
+	private Iska iska;
+	private ArrayList<Platform> platform;
+	private ArrayList<Water> water;
+	private ArrayList<Booklet> booklet;
+	private ArrayList<Barrier> barrier;
+	private ArrayList<Button> button;
+	private Button btn1;
+	private Button btn2;
+	private int choice;
+	
+	private boolean reset;
+	private boolean pause;
+	public Level1State (GameStateManager gsm){
+		this.gsm = gsm;
+		
+		platform = new ArrayList<Platform>();
+		water = new ArrayList<Water>();
+		booklet = new ArrayList<Booklet>();
+		barrier = new ArrayList<Barrier>();
+		button = new ArrayList<Button>();
+		BufferedImage frame;
+		BufferedImage[] frames = new BufferedImage[5];
+		black = new Animation();
+		try {
+			frame = ImageIO.read(getClass().getResourceAsStream("/Background/blackscreen.png"));
+			pauseImage = ImageIO.read(getClass().getResourceAsStream("/Background/Background.png"));
+			bg = new Background("/Background/Map1/Background.png", 0);
+			bg.setVector(0, 0);
+			isko = new Isko(43, 601);
+			iska = new Iska(43, 500);
+			water.add(new Water(652, 666, "violetshort"));
+			water.add(new Water(300, 666, "orangelong"));
+			water.add(new Water(440, 666, "bluelong"));
+			water.add(new Water(150, 219, "violetshort"));
+			water.add(new Water(335, 219, "orangelong"));
+			water.add(new Water(570, 219, "blueshort"));
+			btn1 = new Button(660, 515);
+			button.add(btn1);
+			btn2 = new Button(250, 317);
+			button.add(btn2);
+			barrier.add(new Barrier(357, 368, btn1, btn2));
+			platform.add(new Platform(0, 669, "Map1/bottomborder.png"));
+			platform.add(new Platform(0, 0, "Map1/topborder.png"));
+			platform.add(new Platform(0, 0, "Map1/leftborder.png"));
+			platform.add(new Platform(868, 0, "Map1/rightborder.png"));
+			platform.add(new Platform(40, 562, "Map1/platform0.png"));
+			platform.add(new Platform(595, 525, "Map1/platform2.png"));
+			platform.add(new Platform(812, 601, "Map1/platform3.png"));
+			platform.add(new Platform(369, 471, "Map1/platform4.png"));
+			platform.add(new Platform(40, 443, "Map1/platform5.png"));
+			platform.add(new Platform(40, 375, "Map1/platform3.png"));
+			platform.add(new Platform(136, 327, "Map1/platform6.png"));
+			platform.add(new Platform(472, 355, "Map1/platform7.png"));
+			platform.add(new Platform(752, 387, "Map1/platform8.png"));
+			platform.add(new Platform(812, 285, "Map1/platform3.png"));
+			platform.add(new Platform(529, 222, "Map1/platform9.png"));
+			platform.add(new Platform(459, 194, "Map1/platform10.png"));
+			platform.add(new Platform(139, 222, "Map1/platform11.png"));
+			platform.add(new Platform(40, 162, "Map1/platform12.png"));
+			platform.add(new Platform(222, 97, "Map1/platform1.png"));
+			platform.add(new Platform(456, 97, "Map1/platform1.png"));
+			platform.add(new Platform(670, 114, "Map1/platform2.png"));
+			for(int i = 0; i < 5; i++) {
+				frames[i] = frame;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		black.setFrames(frames);
+		black.setDelay(200);
+		init();
+	}
+	
+	public void init() {
+		choice = 0;
+		try {
+			booklet.add(new Booklet(343, 599, "orange"));
+			booklet.add(new Booklet(483, 599, "blue"));	
+			booklet.add(new Booklet(49, 305, "orange"));
+			booklet.add(new Booklet(516, 270, "blue"));
+			booklet.add(new Booklet(262, 43, "blue"));
+			booklet.add(new Booklet(496, 43, "orange"));
+			booklet.add(new Booklet(710, 398, "blue"));
+			booklet.add(new Booklet(822, 160, "orange"));
+			booklet.add(new Booklet(745, 50, "blue"));
+			booklet.add(new Booklet(75, 105, "orange"));
+			reset = false;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void choice(int k) {
+		if(k == KeyEvent.VK_W || k == KeyEvent.VK_UP) {
+			choice++;
+		}else if(k == KeyEvent.VK_S || k == KeyEvent.VK_DOWN) {
+			choice--;
+		}
+		if(choice < 0) {
+			choice = 2;
+		}else if(choice > 2) {
+			choice = 0;
+		}
+		if(k == KeyEvent.VK_ENTER) {
+			System.out.println(choice);
+		}
+	}
+	public void update() {
+//		if(booklet.size() == 0) {
+//			gsm.
+//		}
+		if(pause) {
+		}else if(reset) {
+			black.update();
+		}else {
+			if(isko.smokeAnimation.hasPlayedOnce() || iska.smokeAnimation.hasPlayedOnce()) {
+				reset = true;
+			}
+			for(int i = 0; i < platform.size(); i++) {
+				isko.checkPlatformCollision(platform.get(i));
+				iska.checkPlatformCollision(platform.get(i));
+			}
+			for(int i = 0; i < water.size(); i++) {
+				water.get(i).update();
+				if(isko.checkCollision(water.get(i), true)){
+					if(!water.get(i).getColor().equals("blue")) {
+						isko.dead = true;
+					}
+				}
+				if(iska.checkCollision(water.get(i), true)){
+					if(!water.get(i).getColor().equals("orange")) {
+						iska.dead = true;
+					}
+				}
+			}
+			for(int i = 0; i < booklet.size(); i++) {
+				booklet.get(i).update();
+				if(isko.checkCollision(booklet.get(i), false) && booklet.get(i).getColor().equals("blue")){
+					booklet.get(i).destroy();
+				}
+				if(iska.checkCollision(booklet.get(i), false) && booklet.get(i).getColor().equals("orange")){
+					booklet.get(i).destroy();
+				}
+				if(booklet.get(i).hasPlayedOnce()){
+					booklet.remove(booklet.get(i));
+				}
+			}
+			for(int i = 0; i < barrier.size(); i++) {
+				barrier.get(i).update();
+				isko.checkPlatformCollision(barrier.get(i));
+				iska.checkPlatformCollision(barrier.get(i));
+			}
+			for(int i = 0; i < button.size(); i++) {
+				button.get(i).update();
+				if(isko.checkCollision(button.get(i), true)) {
+					button.get(i).pressed = true;
+				}else if(iska.checkCollision(button.get(i), true)) {
+					button.get(i).pressed = true;
+				}else {
+					button.get(i).pressed = false;
+				}
+			}
+			isko.update();
+			iska.update();
+		}
+	}
+	public void draw(Graphics2D g) {
+		if(pause) {
+			g.drawImage(pauseImage, 0, 0, null);
+		}if(reset) {
+			g.drawImage(black.getImage(), 0, 0, null);
+			if(black.hasPlayedOnce()) {
+				init();
+				black.setPlayedOnce(false);
+			}
+		}else {
+			bg.draw(g);
+			for(int i = 0; i < platform.size(); i++) {
+				platform.get(i).draw(g);
+			}
+			for(int i = 0; i < barrier.size(); i++) {
+				barrier.get(i).draw(g);
+			}
+			for(int i = 0; i < booklet.size(); i++) {
+				booklet.get(i).draw(g);
+			}
+			isko.draw(g);
+			iska.draw(g);
+			for(int i = 0; i < water.size(); i++) {
+				water.get(i).draw(g);
+			}
+			for(int i = 0; i < button.size(); i++) {
+				button.get(i).draw(g);
+			}
+		}
+	}
+	
+	public void keyPressed(int k) {
+		if(k == KeyEvent.VK_ESCAPE) {
+			pause = true;
+		}
+		isko.keyPressed(k);
+		iska.keyPressed(k);
+	}
+	public void keyReleased(int k) {
+		isko.keyReleased(k);
+		iska.keyReleased(k);
+	}
+	public void mouseClicked(int x, int y) {
+		System.out.println(x + " - " + y);
+	}
+}

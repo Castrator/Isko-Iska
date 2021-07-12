@@ -1,0 +1,94 @@
+package GameState;
+
+import TileMap.Background;
+import Entity.Booklet;
+import Entity.Iska;
+import Entity.Isko;
+import Entity.Platform;
+import Entity.Water;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+
+public class Level1State extends GameState{
+	
+	private Background bg;
+	private Isko isko;
+	private Iska iska;
+	private ArrayList<Platform> platform;
+	private ArrayList<Water> water;
+	private ArrayList<Booklet> booklet;
+//	private ArrayList<Platform> platform;
+
+	public Level1State (GameStateManager gsm){
+		this.gsm = gsm;
+		
+		try {
+			bg = new Background("/Background/Background.png", 0);
+			bg.setVector(0, 0);
+			isko = new Isko(50, 200);
+//			iska = new Iska(50, 300);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		init();
+	}
+	
+	public void init() {
+		platform = new ArrayList<Platform>();
+		water = new ArrayList<Water>();
+		booklet = new ArrayList<Booklet>();
+		try {
+			platform.add(new Platform(0, 653, "Map1/tile0.png"));
+			water.add(new Water(400, 653, "Map1/greenwater0.png"));
+			booklet.add(new Booklet(700, 600, "orange"));
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void update() {
+		for(int i = 0; i < platform.size(); i++) {
+			isko.checkPlatformCollision(platform.get(i));
+//			iska.checkPlatformCollision(platform[i]);
+		}
+		for(int i = 0; i < water.size(); i++) {
+			if(isko.checkCollision(water.get(i))){
+				System.out.println("Water");
+			}
+		}
+		for(int i = 0; i < booklet.size(); i++) {
+			booklet.get(i).update();
+			if(isko.checkCollision(booklet.get(i))){
+				booklet.get(i).destroy();
+			}
+		}
+		isko.update();
+//		iska.update();
+	}
+	public void draw(Graphics2D g) {
+		bg.draw(g);
+		for(int i = 0; i < platform.size(); i++) {
+			platform.get(i).draw(g);
+		}
+		for(int i = 0; i < water.size(); i++) {
+			water.get(i).draw(g);
+		}
+		for(int i = 0; i < booklet.size(); i++) {
+			booklet.get(i).draw(g);
+		}
+		isko.draw(g);
+//		iska.draw(g);
+	}
+	
+	
+	public void keyPressed(int k) {
+		isko.keyPressed(k);
+//		iska.keyPressed(k);
+	}
+	public void keyReleased(int k) {
+		isko.keyReleased(k);
+//		iska.keyReleased(k);
+	}
+}

@@ -1,0 +1,45 @@
+package GameState;
+
+import TileMap.Background;
+import Entity.Isko;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
+public class Level1State extends  GameState{
+	
+	private Background bg;
+	private Isko isko;
+
+	public Level1State (GameStateManager gsm){
+		this.gsm = gsm;
+		
+		try {
+			bg = new Background("/Background/Background.png", 0);
+			bg.setVector(0, 0);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void init() {}
+	public void update() {
+		bg.update();
+	}
+	public void draw(Graphics2D g) {
+		//draw bg
+		bg.draw(g);
+		
+	}
+	
+	
+	public void keyPressed(int k) {
+		if(k == KeyEvent.VK_UP) {
+			System.out.println("Hello");
+		}
+		if(k == KeyEvent.VK_DOWN) {
+			System.out.println("Hello");
+		}
+	}
+	public void keyReleased(int k) {}
+}

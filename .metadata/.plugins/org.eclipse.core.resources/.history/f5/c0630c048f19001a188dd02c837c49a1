@@ -1,0 +1,12 @@
+package Entity;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
+public class Isko extends GameObject{
+
+	public Isko() {
+		super(100, 100, "/Sprites/Player.png");
+	}
+	
+}

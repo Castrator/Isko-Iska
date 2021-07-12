@@ -1,0 +1,21 @@
+package Entity;
+
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+public class Platform extends GameObject{
+	
+
+	public Platform(int x, int y) {
+		super(x, y);
+	}
+	
+	public void update() {
+		
+	}
+	
+	public void draw() {
+		
+	}
+	
+}

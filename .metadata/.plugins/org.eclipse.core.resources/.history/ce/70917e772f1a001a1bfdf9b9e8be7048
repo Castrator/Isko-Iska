@@ -1,0 +1,82 @@
+package GameState;
+
+import TileMap.Background;
+import Entity.Iska;
+import Entity.Isko;
+import Entity.Platform;
+import Entity.Water;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+
+public class Level1State extends GameState{
+	
+	private Background bg;
+	private Isko isko;
+	private Iska iska;
+	private Platform[] platform;
+	private Water[] water;
+//	private ArrayList<Platform> platform;
+
+	public Level1State (GameStateManager gsm){
+		this.gsm = gsm;
+		
+		try {
+			bg = new Background("/Background/Background.png", 0);
+			bg.setVector(0, 0);
+			isko = new Isko(50, 200);
+			iska = new Iska(50, 300);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		init();
+	}
+	
+	public void init() {
+		platform = new Platform[1];
+		water = new Water[1];
+		try {
+			platform[0] = new Platform(-500, 653, "Map1/tile0.png");
+			water[0] = new Water(400, 653, "Map1/greenwater0.png");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void update() {
+		for(int i = 0; i < platform.length; i++) {
+			isko.checkPlatformCollision(platform[i]);
+			iska.checkPlatformCollision(platform[i]);
+		}
+		for(int i = 0; i < water.length; i++) {
+			if(isko.checkCollision(platform[i])){
+				System.out.println("Water");
+			}
+			isko.checkCollision(platform[i]);
+			iska.checkCollision(platform[i]);
+		}
+		isko.update();
+		iska.update();
+	}
+	public void draw(Graphics2D g) {
+		bg.draw(g);
+		for(int i = 0; i < platform.length; i++) {
+			platform[i].draw(g);
+		}
+		for(int i = 0; i < water.length; i++) {
+			water[i].draw(g);
+		}
+		isko.draw(g);
+		iska.draw(g);
+	}
+	
+	
+	public void keyPressed(int k) {
+		isko.keyPressed(k);
+		iska.keyPressed(k);
+	}
+	public void keyReleased(int k) {
+		isko.keyReleased(k);
+		iska.keyReleased(k);
+	}
+}

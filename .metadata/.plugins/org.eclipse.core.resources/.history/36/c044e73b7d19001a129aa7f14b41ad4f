@@ -1,0 +1,67 @@
+package GameState;
+
+import TileMap.Background;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
+public class Level1State extends  GameState{
+	
+	private Background bg;
+
+	private Color titleColor;
+	private Font titleFont;
+	
+	private Font font;
+	
+
+	public Level1State (GameStateManager gsm){
+		this.gsm = gsm;
+		
+		try {
+			bg = new Background("/Background/Background.png", 0);
+			bg.setVector(0, 0);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void init() {}
+	public void update() {
+		bg.update();
+	}
+	public void draw(Graphics2D g) {
+		//draw bg
+		bg.draw(g);
+		
+		//draw title
+		g.setColor(titleColor);
+		g.setFont(titleFont);
+		g.drawString("Isko & Iska", 80, 70);
+		
+		//draw menu options
+		g.setFont(font);
+		for(int i= 0; i< options.length; i++) {
+			if(i== currentChoice) {
+				g.setColor(Color.BLACK);
+			}else {
+				g.setColor(Color.RED);
+			}
+			
+			g.drawString(options[i], 145, 140 +i * 15);
+			
+		}	
+		
+	}
+	
+	
+	public void keyPressed(int k) {
+		if(k == KeyEvent.VK_UP) {
+			System.out.println("Hello");
+		}
+		if(k == KeyEvent.VK_DOWN) {
+			System.out.println("Hello");
+		}
+	}
+	public void keyReleased(int k) {}
+}

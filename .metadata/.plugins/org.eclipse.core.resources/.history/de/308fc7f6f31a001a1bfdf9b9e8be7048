@@ -1,0 +1,41 @@
+package GameState;
+
+import java.util.ArrayList;
+
+public class GameStateManager {
+	
+	private GameState[] gameStates;
+	private int currentState;
+
+	public static int MENUSTATE = 0;
+	public static int LEVELSTATE = 1;
+	
+	public GameStateManager() {
+		gameStates = new GameState[2]();
+	}
+	
+	public void setState(int state) {
+		currentState = state;
+		gameStates[state].init(state);
+	}
+	
+	public void update() {
+		gameStates[state].update();
+	}
+	
+	public void draw(java.awt.Graphics2D g) {
+		gameStates[state].draw(g);
+	}
+	
+	public void keyPressed(int k) {
+		ggameStates[state].keyPressed(k);		
+	}
+	
+	public void keyReleased(int k) {
+		gameStates[state].keyReleased(k);
+	}
+	
+	public void mouseClicked(int x, int y) {
+		gameStates[state].mouseClicked(x, y);
+	}
+}

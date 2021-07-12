@@ -1,0 +1,62 @@
+package GameState;
+
+import TileMap.Background;
+import Entity.Isko;
+import Entity.Platform;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
+public class Level1State extends GameState{
+	
+	private Background bg;
+	private Isko isko;
+	private Platform[] platform;
+
+	public Level1State (GameStateManager gsm){
+		this.gsm = gsm;
+		
+		try {
+			bg = new Background("/Background/Background.png", 0);
+			bg.setVector(0, 0);
+			isko = new Isko(50, 580);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		init();
+	}
+	
+	public void init() {
+		platform = new Platform[1];
+		try {
+//			platform[0] = new Platform(-860, 630, "Map1/tile0.png");
+			platform[0] = new Platform(0, 653, "Map1/tile0.png");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void update() {
+		bg.update();
+		isko.update();
+		for(int i = 0; i < platform.length; i++) {
+			System.out.println(isko.checkPlatformCollision(platform[i]));
+//			System.out.println(isko.checkCollision(platform[i]));
+		}
+	}
+	public void draw(Graphics2D g) {
+		//draw bg
+		bg.draw(g);
+		for(int i = 0; i < platform.length; i++) {
+			platform[i].draw(g);
+		}
+		isko.draw(g);
+	}
+	
+	
+	public void keyPressed(int k) {
+		isko.keyPressed(k);
+	}
+	public void keyReleased(int k) {
+		isko.keyReleased(k);
+	}
+}

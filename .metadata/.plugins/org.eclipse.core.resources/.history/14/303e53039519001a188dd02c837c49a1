@@ -1,0 +1,25 @@
+package Entity;
+
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
+public class Isko extends GameObject{
+	
+	private ArrayList<BufferedImage[]> sprites;
+	private final int[] numFrames = {8, 3};
+	private static final int IDLE = 1;
+	private static final int RUNNING = 0;
+
+	public Isko() {
+		super(100, 100);
+		try {
+			BufferedImage spriteSheet = ImageIO.read(getClass().getResourceAsStream("Sprites/iskorun.gif"));
+			for(int i = 0; i < 1; i++) {
+				BufferedImage[] bi = new BufferedImage[numFrames[i]];
+			}
+		}
+		
+	}
+	
+}

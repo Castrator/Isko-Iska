@@ -1,0 +1,32 @@
+package Entity;
+
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+public abstract class GameObject {
+
+	protected int width;
+	protected int height;
+	protected int x;
+	protected int y;
+	protected int dx;
+	protected int dy;
+	protected int ax;
+	protected int ay;
+	protected int destx;
+	protected int desty;
+	
+	protected BufferedImage image;
+	
+	public GameObject(int x, int y, BufferedImage image) {
+		this.x = x;
+		this.y = y;
+		this.image = image;
+		this.width = image.getWidth();
+		this.height = image.getHeight();
+	}
+	
+	public Rectangle getRect() {
+		return new Rectangle(x, y, width, height);
+	}
+}
